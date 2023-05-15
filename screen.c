@@ -31,7 +31,7 @@ void LcdOp()
 		close(sfd);
 		return;
 	}//获取信息
-	
+
 
 	int length = info.xres * info.yres * info.bits_per_pixel / 8;
 	plcd = (int*)mmap(NULL, length, PROT_WRITE, MAP_SHARED, sfd, 0);
@@ -82,7 +82,7 @@ void DrawCircle(int x, int y, int r, int color)
 
 void XY_Color(int x, int y, int color)
 {
-	if (y >= 0 && y < info.yres && x >= 0 && x < info.xres)
+	if ((y * info.xres + x<info.xres*info.yres) && (y * info.xres + x>=0))
 	{
 		*(plcd + y * info.xres + x) = color;
 	}

@@ -70,7 +70,9 @@ start:
 		{
 			if (GameOver())
 			{
-				goto start;
+                FreeBackgroundTemp();
+                FreeAllObj();
+                goto start;
 			}
 			else
 			{
@@ -95,7 +97,6 @@ start:
 		Mov(&Pipe2, 3, Left);
 		Mov(&Pipe3, 3, Left);
 		Mov(&Pipe4, sp4, Left);
-		//所有对象的移动都在上面了
 		usleep(1000);//控制游戏的速度至人眼能适应的程度
 		times++;
 		//循环对象的使用
@@ -141,7 +142,8 @@ start:
 		{
 			score++;
 		}
-	} 
+	}
+    FreeAllObj();
 	LcdClos();
 	FreeBackgroundTemp();
 }
