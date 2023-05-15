@@ -13,6 +13,7 @@ typedef struct object
 	int height;//高
 	int depth;//深度
 	int priority;//在屏幕中显示的优先级
+    int fill; // 填充的无用像素
     unsigned char* pixel;
 	int hitBox[8];//Obj的碰撞体积,在初始化时默认设置为bmp的尺寸。可以通过ReHitBox重新设置。
 

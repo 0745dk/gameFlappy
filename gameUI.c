@@ -1,6 +1,8 @@
 #include "datastruct.h"
 #include "bmp.h"
 #include "operate.h"
+
+#include "screen.h"
 int GameOver()
 {
 	obj restart = InitObj("./Restart.bmp", 294, 150, 4);
@@ -12,12 +14,11 @@ int GameOver()
 		int f = TouchForMainThread(294, 150, 505, 217, 294, 263, 505, 330);
 		if (f)//Restart
 		{
-			return 1;
+            return 1;
 		}
 		else
 		{
 			return 0;
 		}
 	}
-
 }

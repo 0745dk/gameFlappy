@@ -17,7 +17,8 @@
 #include <stdlib.h>
 #include "bmp.h"
 #include "character.h"
-#include "constansts.h"
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 480
 obj backGround;
 //unsigned char* backgroundPixel = NULL;
 extern struct fb_var_screeninfo info;
@@ -25,6 +26,10 @@ extern int* plcd;
 char* occupiedPixel;//屏幕中已经被占用的像素点,这些像素点不会被刷新.数字的大小表示图片的优先级
 #define Max(a,b) (((a)>(b))?(a):(b))
 #define Min(a,b) (((a)>(b))?(b):(a))
+
+int clamp(int x, int min,int max){
+    return x > max ? max : x < min ? min : x;
+}
 
 
 /*刷新背景的某个区域到屏幕上。
@@ -46,16 +51,20 @@ priority:要刷新的区域的优先级.优先级相同的才会刷新。
 void RefreshBackground(int x0, int y0, int x1, int y1, int priority)
 {
 	int width = SCREEN_WIDTH, height = SCREEN_HEIGHT, depth = SCREEN_HEIGHT;
-	x0 = x0 > abs(width) - 1 ? abs(width) - 1 : x0;
-	x1 = x1 > abs(width) - 1 ? abs(width) - 1 : x1;
-	y0 = y0 > abs(height) - 1 ? abs(height) - 1 : y0;
-	y1 = y1 > abs(height) - 1 ? abs(height) - 1 : y1;
+    x0 = clamp(x0, 0, abs(width) - 1);
+    x1 = clamp(x1, 0, abs(width) - 1);
+    y0 = clamp(y0, 0, abs(height) - 1);
+    y1 = clamp(y1, 0, abs(height) - 1);
 
 	int x, y;
 	for (y = y0; y < y1; y++)//y区域的行数
 	{
 		for (x = x0; x < x1; x++)//x区域的列数
 		{
+            if (y*SCREEN_WIDTH+x<0||y*SCREEN_WIDTH+x>=SCREEN_WIDTH * SCREEN_HEIGHT)
+            {
+                continue;
+            }
 			if (*(occupiedPixel + y * SCREEN_WIDTH + x) != priority)
 			{
 				continue;
@@ -142,15 +151,16 @@ void BmpDraw(obj object, int filterColor)
 int GetColorInBmp(int x, int y, obj object)
 {
     unsigned char a, r, g, b;
-    int width = object.width, height = object.height, depth = object.height;
+    int width = object.width, height = object.height;
     int realx0 = width > 0 ? x : (width - x);
     int realy0 = height > 0 ? (height - y) : y;
     realy0--;
     if (realx0 > width || realx0<0 || realy0>height || realy0 < 0)
     {
-        return -1;
+//        printf("%d,%d,%d,%d,%d,%d\n",realx0,realy0,width,height,x,y);
+        return 0xFF;
     }
-    int i = (realx0 + realy0 * width) * 3;
+    int i = (realx0*3) + realy0 * (3*width+object.fill);
 
     b = object.pixel[i++];
     g = object.pixel[i++];

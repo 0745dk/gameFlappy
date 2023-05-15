@@ -4,18 +4,13 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
-//#include "constansts.h"
 #include "stdlib.h"
-obj** record;
+unsigned char** record;
 int objNums;
-void GetPixelInBmp(obj* object){
-    int x0 = object->x, y0 = object->y;
-    // 屏幕外的不绘制
-//    if (x0 > SCREEN_WIDTH || x0 < -object->width || y0 > SCREEN_HEIGHT || y0 < -object->height)
-//    {
-//        return;
-//    }
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 480
 
+void GetPixelInBmp(obj* object){
     int fd = open(object->pic, O_RDONLY);
     if (fd == -1)
     {
@@ -23,12 +18,14 @@ void GetPixelInBmp(obj* object){
     }
     int valid_bytes_per_line; //每一行有效的数据字节数
     int laizi = 0; // 每一行末尾的填充的“赖子”数
+    object->fill=0;
     int total_bytes_per_line; //每一行实际的字节数.
     int total_bytes; //整个像素数组的字节数
     valid_bytes_per_line = abs(object->width) * (object->depth / 8);
     if (valid_bytes_per_line % 4)
     {
         laizi = 4 - valid_bytes_per_line % 4;
+        object->fill = laizi;
     }
     total_bytes_per_line = valid_bytes_per_line + laizi;
     total_bytes = abs(object->height) * total_bytes_per_line;
@@ -41,22 +38,20 @@ void GetPixelInBmp(obj* object){
 obj InitObj(char* path,int x0,int y0,int priority)
 {
     obj newObj;
-    if (record==NULL){
-        record = (obj**) malloc(sizeof(obj*)*10);
-        objNums=0;
-    }
-    if(objNums>=10){
-        printf("objNum = %d,out of the limitation",objNums);
-        return newObj;
-    }
-    record[objNums] = &newObj;
-    objNums++;
+//    if (record==NULL){
+//        record = (unsigned char **)malloc(sizeof(unsigned char*)*10);
+//        objNums=0;
+//    }
+//    if(objNums>=10){
+//        printf("objNum = %d,out of the limitation",objNums);
+//        return newObj;
+//    }
+
 
     newObj.x = x0;
     newObj.y = y0;
     newObj.pic = path;
     newObj.priority = priority;
-
     int fd = open(path, O_RDONLY);
     if (fd == -1)
     {

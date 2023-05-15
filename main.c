@@ -22,6 +22,10 @@
 int touched = 0;//一个全局变量,用于记录是否按到了屏幕
 int terminate = 0;//记录进程的状态。terminate=1时，游戏结束
 
+void Dbg(int num){
+    printf("%d          \n",num);
+    fflush(stdout);
+}
 int main()
 {
 	static pthread_t th1;
@@ -38,15 +42,15 @@ int main()
 	srand((unsigned)time(NULL));//设置随机函数的种子
 	LcdOp();//打开Lcd
 start:
-	OpenBackGround("./background.bmp");//打开背景
+    OpenBackGround("./background.bmp");//打开背景
 	obj bird = InitObj("./bird.bmp", 195, 232, 3);// 195, 232
 	BmpDraw(bird, 0xFFFFFF);//初始化小鸟并绘制小鸟图片
-	obj ground = InitObj("./ground.bmp", 0, 440, 1);
+    obj ground = InitObj("./ground.bmp", 0, 440, 1);
 	BmpDraw(ground, 0xFFFFFF);//初始化大地并绘制大地图片
 	obj Pipe1 = InitObj("./pipe.bmp", 800, -(110 + rand() % 286), 2);
 	obj Pipe2 = InitObj("./pipe.bmp", 1066, -(110 + rand() % 286), 2);
 	obj Pipe3 = InitObj("./pipe.bmp", 1332, -(110 + rand() % 286), 2);
-	obj Pipe4 = InitObj("./pipe.bmp", 1999, -99, 2);
+    obj Pipe4 = InitObj("./pipe.bmp", 1999, -99, 2);
 	//初始化所有的管道,y轴坐标是一个在-369~-90的一个随机值(这样才能让管子的缝隙在屏幕之间)
 
 	int re[8] = { 0,0,51,402,0,538,51,917 };
@@ -71,7 +75,6 @@ start:
 			if (GameOver())
 			{
                 FreeBackgroundTemp();
-                FreeAllObj();
                 goto start;
 			}
 			else
