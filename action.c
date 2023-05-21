@@ -2,6 +2,7 @@
 #include "datastruct.h"
 #include "action.h"
 #include <stdio.h>
+#include "stdlib.h"
 #define MaxSpeed 10
 #define UpMaxSpeed -10
 #define Gravity 9.8

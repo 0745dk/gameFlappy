@@ -35,16 +35,11 @@ int clamp(int x, int min,int max){
 /*Ë¢ĞÂ±³¾°µÄÄ³¸öÇøÓòµ½ÆÁÄ»ÉÏ¡£
 
 (x0,y0)
-*---------------------
-|					 |
-|					 |
-|					 |
-|	  ÒªË¢ĞÂµÄÇøÓò	 |
-|					 |
-|					 |
-|					 |
-|                    |
----------------------*
+*-------------------
+|					|
+|	  ÒªË¢ĞÂµÄÇøÓò	|
+|					|
+-------------------*
 					(x1,y1)
 priority:ÒªË¢ĞÂµÄÇøÓòµÄÓÅÏÈ¼¶.ÓÅÏÈ¼¶ÏàÍ¬µÄ²Å»áË¢ĞÂ¡£
 */
@@ -80,7 +75,6 @@ void RefreshBackground(int x0, int y0, int x1, int y1, int priority)
 
 void FreeBackgroundTemp()
 {
-//	free(backgroundPixel);
 	free(occupiedPixel);
 }
 
@@ -93,22 +87,6 @@ void OpenBackGround(char* back)//´ò¿ªÒ»ÕÅ±³¾°Í¼¡£´ò¿ªºó¿ÉÒÔÊ¹ÓÃÒÆ¶¯º¯Êı¡¢Ë¢ĞÂº¯Ê
 		perror("bmpOp");
 	}
 	occupiedPixel = (char*)malloc(sizeof(char) * SCREEN_WIDTH * SCREEN_HEIGHT);
-//	int valid_bytes_per_line; //Ã¿Ò»ĞĞÓĞĞ§µÄÊı¾İ×Ö½ÚÊı
-//	int laizi = 0; // Ã¿Ò»ĞĞÄ©Î²µÄÌî³äµÄ¡°Àµ×Ó¡±Êı
-//	int total_bytes_per_line; //Ã¿Ò»ĞĞÊµ¼ÊµÄ×Ö½ÚÊı.
-//	int total_bytes; //Õû¸öÏñËØÊı×éµÄ×Ö½ÚÊı
-//
-//	valid_bytes_per_line = abs(SCREEN_WIDTH) * (backGround.depth / 8);
-//	if (valid_bytes_per_line % 4)
-//	{
-//		laizi = 4 - valid_bytes_per_line % 4;
-//	}
-//	total_bytes_per_line = valid_bytes_per_line + laizi;
-//	total_bytes = abs(SCREEN_HEIGHT) * total_bytes_per_line;
-//
-//	backgroundPixel = (unsigned char*)malloc(total_bytes);
-//	lseek(fd, 54, SEEK_SET);
-//	read(fd, backgroundPixel, total_bytes);
 	//½«±³¾°Í¼µÄÑÕÉ«ĞÅÏ¢´æÈë»º´æÇøÖĞ
 	close(fd);
 	BmpDraw(backGround, -1);
@@ -117,8 +95,6 @@ void OpenBackGround(char* back)//´ò¿ªÒ»ÕÅ±³¾°Í¼¡£´ò¿ªºó¿ÉÒÔÊ¹ÓÃÒÆ¶¯º¯Êı¡¢Ë¢ĞÂº¯Ê
 void BmpDraw(obj object, int filterColor)
 {
 	int x0 = object.x, y0 = object.y;
-
-	// ½âÎöÏñËØÊı¾İ£¬²¢ÔÚÆÁÄ»ÉÏÏÔÊ¾
 	int color;
 	int x, y;
 	for (y = y0; y < y0 + abs(object.height); y++)
@@ -157,7 +133,6 @@ int GetColorInBmp(int x, int y, obj object)
     realy0--;
     if (realx0 > width || realx0<0 || realy0>height || realy0 < 0)
     {
-//        printf("%d,%d,%d,%d,%d,%d\n",realx0,realy0,width,height,x,y);
         return 0xFF;
     }
     int i = (realx0*3) + realy0 * (3*width+object.fill);

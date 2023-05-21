@@ -38,16 +38,6 @@ void GetPixelInBmp(obj* object){
 obj InitObj(char* path,int x0,int y0,int priority)
 {
     obj newObj;
-//    if (record==NULL){
-//        record = (unsigned char **)malloc(sizeof(unsigned char*)*10);
-//        objNums=0;
-//    }
-//    if(objNums>=10){
-//        printf("objNum = %d,out of the limitation",objNums);
-//        return newObj;
-//    }
-
-
     newObj.x = x0;
     newObj.y = y0;
     newObj.pic = path;

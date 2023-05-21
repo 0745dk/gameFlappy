@@ -5,6 +5,7 @@
 #include "thread.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <pthread.h>
 #include "screen.h"
 extern int touched;
@@ -23,7 +24,7 @@ void* Touch(void* arg)
 	if (fd == -1)
 	{
 		perror("failed to open /dev/input/event0");
-		return;
+		return NULL;
 	}
 
 	int x = -1, y = -1;
@@ -78,7 +79,7 @@ int TouchForMainThread(int x0, int y0, int x1, int y1, int x2, int y2, int x3, i
 	if (fd == -1)
 	{
 		perror("failed to open /dev/input/event0");
-		return;
+		return -1;
 	}
 
 	int x = -1, y = -1;
